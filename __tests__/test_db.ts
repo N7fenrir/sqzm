@@ -62,7 +62,7 @@ const dbTestSuite = (): void => {
 
           describe('.. after creation of table then ', () => {
             const toInsert = { URL: 'obiwan', short: 'kenobi' };
-
+            let tempCount = 0;
             describe('.. then on trying to insert ', () => {
               describe(' .. a unique value', () => {
                 test('.. for the first time, resolve to true', () => {
@@ -85,7 +85,9 @@ const dbTestSuite = (): void => {
               test('.. updating the visitors counter', () => {
                 db.checkIfTableExists(TABLES.visits).then(async (done) => {
                   if (done) {
-                    expect(db.addNewVisitor()).resolves.toBe(true);
+                    const visitorAdded = await db.addNewVisitor();
+                    tempCount = tempCount + 1;
+                    expect(visitorAdded).toBe(true);
                   }
                 });
               });
@@ -104,6 +106,20 @@ const dbTestSuite = (): void => {
                 db.checkIfTableExists(TABLES.main).then(async (done) => {
                   if (done) {
                     expect(db.isShortValAlreadyInDB('Vader')).resolves.toBe(false);
+                  }
+                });
+              });
+
+              test('.. of visitors', () => {
+                db.checkIfTableExists(TABLES.visits).then(async (done) => {
+                  if (done) {
+                    await db.addNewVisitor();
+                    tempCount = tempCount + 1;
+                    await db.addNewVisitor();
+                    tempCount = tempCount + 1;
+                    await db.addNewVisitor();
+                    tempCount = tempCount + 1;
+                    expect(db.getTotalVisitors()).resolves.toEqual(tempCount);
                   }
                 });
               });

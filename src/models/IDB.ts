@@ -7,7 +7,7 @@ export interface IURL {
 }
 
 export interface IVisitors {
-  count: number | string;
+  visitCount: number | string;
 }
 
 export interface IDBRow {

@@ -4,7 +4,7 @@
   "description": "Url Shortner using Node.js, Typescript, express. Tested with JEST",
   "main": "index.ts",
   "scripts": {
-    "start": "node -r ts-node/register ./src/index.ts -c ./configs/config.json",
+    "start": "node -r ts-node/register ./src/index.ts start -c ./configs/config.json",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "test": "jest --verbose --detectOpenHandles  -- allTests.test.ts",
@@ -36,6 +36,7 @@
     "@types/jest": "^27.0.1",
     "@types/sqlite3": "^3.1.7",
     "@types/supertest": "^2.0.11",
+    "@types/valid-url": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
     "eslint": "^7.32.0",
@@ -61,6 +62,8 @@
     "commmander": "0.0.1-security",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "sqlite3": "^5.0.2"
+    "nanoid": "^3.1.25",
+    "sqlite3": "^5.0.2",
+    "valid-url": "^1.0.9"
   }
 }

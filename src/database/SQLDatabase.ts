@@ -147,6 +147,25 @@ class SQLDatabase {
   }
 
   /**
+   * Get the total visitors from the db
+   *
+   * @returns - Returns the total number of visiotrs
+   *
+   */
+  public async getTotalVisitors(): Promise<number> {
+    return await new Promise((resolve, reject) => {
+      this.db.serialize(async () => {
+        const stmt = queries.getVisitors.replace('$T$', TABLES.visits);
+        this.db.get(stmt, (err, row) => {
+          if (err) reject(err);
+          const count = (row as IVisitors).visitCount;
+          resolve(parseInt(count.toString()));
+        });
+      });
+    });
+  }
+
+  /**
    * Function to close the db connection
    *
    */

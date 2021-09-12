@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import validUrl from 'valid-url';
+
 import { ConfigLoader } from './config/ConfigLoader';
 import SQLDatabase from './database/SQLDatabase';
 import IConfigModeContainer from './models/IConfig';
@@ -70,6 +72,22 @@ export function createFolderIfItDoesNotExist(filePath: string): boolean {
     } else {
       return true;
     }
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Validate URL
+ *
+ * @param url - The Url to validate if it is valid
+ * @returns - Returns true if the url is valid, false if not
+ */
+export function validateUrl(url: string): boolean {
+  // Only well formed URI's are taken into consideration
+  // One way to check for validation is to ping the uri
+  if (validUrl.isWebUri(url)) {
+    return true;
   } else {
     return false;
   }
