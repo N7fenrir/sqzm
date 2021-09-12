@@ -1,6 +1,9 @@
 import SQLDatabase from '../src/database/SQLDatabase';
 import fs from 'fs';
-import { DEFAULT_DB_ADDRESS } from '../src/statics';
+import { DEFAULT_DB_ADDRESS, TABLES } from '../src/statics';
+
+const INMEMDB = ':memory:';
+const SQL_UNIQUE_CONSTRAINT_ERROR = 'SQLITE_CONSTRAINT: UNIQUE constraint failed: URLShort.Short';
 
 /**
  * Database Tests
@@ -23,6 +26,37 @@ const dbTestSuite = (): void => {
             const fileExists = checkFileExistsSync(DEFAULT_DB_ADDRESS);
             expect(fileExists).toBe(true);
             expect(new SQLDatabase(DEFAULT_DB_ADDRESS)).toBeInstanceOf(SQLDatabase);
+          });
+        });
+      });
+    });
+    describe('.. on database open or create', () => {
+      const db = new SQLDatabase(INMEMDB);
+
+      describe('.. When cheking the ', () => {
+        describe('.. existance of table ', () => {
+          test('.. ' + TABLES.main + ' return false, if it does not exist', async () => {
+            const tableExists = await db.checkIfTableExists(TABLES.main);
+            expect(tableExists).toBe(false);
+          });
+
+          test('... ' + TABLES.visits + ' return false if it does not exist', async () => {
+            const tableExists = await db.checkIfTableExists(TABLES.visits);
+            expect(tableExists).toBe(false);
+          });
+
+          describe('.. then create table ', () => {
+            test('.. ' + TABLES.main, async () => {
+              await db.createTableURLs(TABLES.main);
+              const tableExistsAfterCreation = await db.checkIfTableExists(TABLES.main);
+              expect(tableExistsAfterCreation).toBe(true);
+            });
+
+            test('.. ' + TABLES.visits, async () => {
+              await db.createTableURLs(TABLES.visits);
+              const tableExistsAfterCreation = await db.checkIfTableExists(TABLES.visits);
+              expect(tableExistsAfterCreation).toBe(true);
+            });
           });
         });
       });
