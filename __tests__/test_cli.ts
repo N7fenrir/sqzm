@@ -13,7 +13,6 @@ const cliTestSuite = (): void => {
         await subprocess
           .then((data) => {
             expect(data.command).toEqual(command);
-            console.log(data);
             expect(data.exitCode).toBe(0);
             expect(data.stderr).toBe('');
           })
@@ -26,6 +25,31 @@ const cliTestSuite = (): void => {
       } finally {
         subprocess.cancel();
       }
+    });
+
+    describe('.. after taking the command line argument ', () => {
+      test('.. runs function "startServer" ', async () => {
+        const command = 'node -r ts-node/register ./src/index.ts start -c ./configs/config.json';
+        const subprocess = startProcess(command);
+
+        try {
+          await subprocess
+            .then(async (data) => {
+              expect(data.exitCode).toBe(0);
+              expect(data.stderr).toBe('');
+              expect(data.stdout).toBe('Starting Sqzm...');
+            })
+            .catch((err) => {
+              console.log('ERR', err);
+              expect(err.killed).toBe(true);
+            });
+        } catch (error: any) {
+          expect(subprocess.killed).toBe(true);
+          expect(error).not.toBe(null);
+        } finally {
+          subprocess.cancel();
+        }
+      });
     });
   });
 };
