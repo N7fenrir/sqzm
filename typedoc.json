@@ -1,0 +1,15 @@
+{
+    "entryPoints": [
+        "./src"
+    ],
+    "readme": "none",
+    "excludePrivate": true,
+    "hideGenerator": true,
+    "theme": "markdown",
+    "out": "./doc",
+    "disableSources": true,
+    "external-modulemap": ".*/src/([^\\./]+)/",
+    "exclude": [
+        "**/*.test.js"
+    ]
+}

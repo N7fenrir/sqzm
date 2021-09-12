@@ -1,0 +1,61 @@
+{
+  "env": {
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "jsdoc",
+    "prettier",
+    "eslint-plugin-tsdoc"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "tsdoc/syntax": "error",
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-use-before-define": "off",
+    "jsdoc/require-jsdoc": [
+      "error",
+      {
+        "publicOnly": true,
+        "contexts": [
+          "MethodDefinition:not([accessibility=\"private\"]) > FunctionExpression"
+        ],
+        "require": {
+          "ArrowFunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": false,
+          "MethodDefinition": false
+        }
+      }
+    ],
+    "jsdoc/check-tag-names": [
+      "warn",
+      {
+        "definedTags": [
+          "typeParam",
+          "internal",
+          "private"
+        ]
+      }
+    ],
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off"
+  },
+  "settings": {
+    "jsdoc": {
+      "ignorePrivate": true,
+      "mode": "typescript"
+    }
+  }
+}
