@@ -1,0 +1,6 @@
+{
+    "name": "Development",
+    "address": "http://localhost",
+    "port": 8080,
+    "dbAddress": "./db/sqzrdb.db"
+}
