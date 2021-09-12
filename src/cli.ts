@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { dirname } from 'path';
 import { version } from '../package.json';
+import { getConfigFile } from './utils';
 
 const command = new Command('Sqzm');
 
@@ -11,6 +12,7 @@ interface ICmdLineArgs {
 
 async function startServer(options: ICmdLineArgs) {
   console.log('Starting Sqzm...');
+  const configFile = getConfigFile(options.config);
 }
 
 command
