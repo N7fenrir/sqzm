@@ -38,6 +38,10 @@ const sqmTestSuite = (): void => {
     const app = supertest(sqms.server);
 
     describe('.. after recieving valid schema and dbController', () => {
+      test('.. GET /', async () => {
+        const response = await app.get('/');
+        expect(response.statusCode).toBe(200);
+      });
 
       test('.. on random get 404', async () => {
         const response = await app.get('/8q7wrhivfd');

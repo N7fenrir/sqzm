@@ -130,6 +130,12 @@ class ShorterService {
       });
     });
 
+    server.use('/', express.static('public'));
+
+    server.get('/', (_, response: Response) => {
+      response.sendFile(path.join(__dirname + '/public/index.html'));
+    });
+
     server.get('*', function (_, response: Response) {
       response.status(404).send('Page Nor Found 404');
     });
