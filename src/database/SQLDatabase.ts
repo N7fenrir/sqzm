@@ -59,12 +59,53 @@ class SQLDatabase {
   }
 
   private async doesTableExist(tableName: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       this.db.get(`SELECT name FROM sqlite_master WHERE type='table' AND name=?`, tableName, (err, row) => {
         if (err === null) resolve(row !== undefined);
         else reject(err);
       });
     });
+  }
+
+  /**
+   * Function to insert new value in the database
+   *
+   * @param data - The data  that is to be inserted
+   *
+   * @returns - Returns true if the insert is done
+   */
+  public async insertNewValue(data: IDBRow): Promise<boolean> {
+    return await new Promise((resolve, reject) => {
+      this.db.exec(
+        queries.insertDataInTable.replace('$$', `'${data.URL}' , '${data.short}'`).replace('$T$', TABLES.main),
+        (err) => {
+          if (err === null) resolve(true);
+          else reject(err.message);
+        },
+      );
+    });
+  }
+
+  /**
+   * Function to insert the visit counter
+   *
+   * @returns - Returns a boolean if the operation is successfull
+   */
+  public async addNewVisitor(): Promise<boolean> {
+    return await new Promise((resolve, reject) => {
+      this.db.exec(queries.incrementViews.replace('$T$', TABLES.visits), (err) => {
+        if (err === null) resolve(true);
+        else reject(err.message);
+      });
+    });
+  }
+
+  /**
+   * Function to close the db connection
+   *
+   */
+  public closeDB(): void {
+    this.db.close();
   }
 }
 

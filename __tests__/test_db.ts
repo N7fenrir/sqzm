@@ -30,6 +30,7 @@ const dbTestSuite = (): void => {
         });
       });
     });
+
     describe('.. on database open or create', () => {
       const db = new SQLDatabase(INMEMDB);
 
@@ -53,9 +54,41 @@ const dbTestSuite = (): void => {
             });
 
             test('.. ' + TABLES.visits, async () => {
-              await db.createTableURLs(TABLES.visits);
+              await db.createTableVisitors(TABLES.visits);
               const tableExistsAfterCreation = await db.checkIfTableExists(TABLES.visits);
               expect(tableExistsAfterCreation).toBe(true);
+            });
+          });
+
+          describe('.. after creation of table then ', () => {
+            const toInsert = { URL: 'obiwan', short: 'kenobi' };
+
+            describe('.. then on trying to insert ', () => {
+              describe(' .. a unique value', () => {
+                test('.. for the first time, resolve to true', () => {
+                  db.checkIfTableExists(TABLES.main).then(async (done) => {
+                    if (done) {
+                      expect(db.insertNewValue(toInsert)).resolves.toBe(true);
+                    }
+                  });
+                });
+
+                test('.. for the second time, reject with ERROR MESSAGE ', () => {
+                  db.checkIfTableExists(TABLES.main).then(async (done) => {
+                    if (done) {
+                      expect(db.insertNewValue(toInsert)).rejects.toEqual(SQL_UNIQUE_CONSTRAINT_ERROR);
+                    }
+                  });
+                });
+              });
+
+              test('.. updating the visitors counter', () => {
+                db.checkIfTableExists(TABLES.visits).then(async (done) => {
+                  if (done) {
+                    expect(db.addNewVisitor()).resolves.toBe(true);
+                  }
+                });
+              });
             });
           });
         });

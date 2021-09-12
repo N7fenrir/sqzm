@@ -14,6 +14,7 @@ const cliTestSuite = (): void => {
             expect(data.command).toEqual(command);
           })
           .catch((err) => {
+            console.log('err', err);
             expect(err.failed).toBe(true);
           });
       } catch (error: any) {
