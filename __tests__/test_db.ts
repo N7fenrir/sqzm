@@ -90,6 +90,42 @@ const dbTestSuite = (): void => {
                 });
               });
             });
+
+            describe('.. then check the db table for a value ', () => {
+              test('.. if it exists, then return true', () => {
+                db.checkIfTableExists(TABLES.main).then(async (done) => {
+                  if (done) {
+                    expect(db.isShortValAlreadyInDB(toInsert.short)).resolves.toBe(true);
+                  }
+                });
+              });
+
+              test('.. if it does not exist, then return false', () => {
+                db.checkIfTableExists(TABLES.main).then(async (done) => {
+                  if (done) {
+                    expect(db.isShortValAlreadyInDB('Vader')).resolves.toBe(false);
+                  }
+                });
+              });
+            });
+
+            describe('.. then search by the short, if the value of URL', () => {
+              test('.. exists in DB, get', () => {
+                db.checkIfTableExists(TABLES.main).then(async (done) => {
+                  if (done) {
+                    expect(db.getURLFromDB(toInsert.short)).resolves.toEqual(toInsert.URL);
+                  }
+                });
+              });
+
+              test('.. does not exists in db, get undefined', () => {
+                db.checkIfTableExists(TABLES.main).then(async (done) => {
+                  if (done) {
+                    expect(db.getURLFromDB('Vader')).resolves.toEqual(undefined);
+                  }
+                });
+              });
+            });
           });
         });
       });

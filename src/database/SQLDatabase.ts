@@ -101,6 +101,52 @@ class SQLDatabase {
   }
 
   /**
+   * Function to check if the value already exists in the db
+   *
+   * @param shortURL - The url to check for
+   * @param callback - The call back function to call to store data from the sqlite query
+   *
+   * @returns - Returns a false value if the value is not presetn
+   */
+  public async isShortValAlreadyInDB(shortURL: string): Promise<boolean> {
+    return await new Promise((resolve, reject) => {
+      this.db.serialize(async () => {
+        const stmt = queries.checkForExistingVal.replace('$$', `${shortURL}`).replace('$T$', TABLES.main);
+        this.db.get(stmt, (err, row) => {
+          if (err) reject({ errDB: err, data: undefined });
+          if (row === undefined) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      });
+    });
+  }
+
+  /**
+   * Function to get the original URL back from the database
+   *
+   * @param shortURL - The short url visited
+   * @returns - Returns a promise with a string of the original URL
+   */
+  public async getURLFromDB(shortURL: string): Promise<undefined | string> {
+    return await new Promise((resolve, reject) => {
+      this.db.serialize(async () => {
+        const stmt = queries.getURLFromDB.replace('$$', `${shortURL}`).replace('$T$', TABLES.main);
+        this.db.get(stmt, (err, row) => {
+          if (err) reject(err);
+          if (row === undefined) {
+            resolve(undefined);
+          } else {
+            resolve((row as IURL).URL);
+          }
+        });
+      });
+    });
+  }
+
+  /**
    * Function to close the db connection
    *
    */
