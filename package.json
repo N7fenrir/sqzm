@@ -1,0 +1,38 @@
+{
+  "name": "squeeze-machine",
+  "version": "1.0.0",
+  "description": "Url Shortner using Node.js, Typescript, express. Tested with JEST",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node -r ts-node/register ./src/index.ts",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "jest --verbose --detectOpenHandles  --watchAll",
+    "docs": "typedoc --options typedoc.json",
+    "make": "npm run build && npm run lint && npm run test && npm run docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N7fenrir/sqzm.git"
+  },
+  "keywords": [
+    "link",
+    "shortner",
+    "TDD",
+    "Backend",
+    "TIER",
+    "Node.js"
+  ],
+  "author": "Vighnesh Bheed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N7fenrir/sqzm/issues"
+  },
+  "homepage": "https://github.com/N7fenrir/sqzm#readme",
+  "devDependencies": {
+    
+  },
+  "dependencies": {
+   
+  }
+}
