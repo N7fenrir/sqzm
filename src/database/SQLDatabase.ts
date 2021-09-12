@@ -9,7 +9,7 @@ class SQLDatabase {
    *
    */
   constructor(dbFile: string) {
-    this.db = new sqlite3.Database(dbFile, (err: Error) => {
+    this.db = new sqlite3.Database(dbFile, (err: any) => {
       if (err) {
         console.log(`Error creating database at ${dbFile} Exiting`);
         throw new Error(err.message);
